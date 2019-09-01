@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>My Image Board</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://kit.fontawesome.com/b280fcf19b.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/stylesheet.css">
+</head>
+
+
+<body>
+	<div id="main">
+		<div id="head">
+			<div id="text-in-head">
+				<h1>Lovely Picture From Life</h1>
+			</div>
+		</div>
+
+		<div id="input-field">
+			<div id="search-field">
+				<input class="searchterm" v-model='title' name="title" placeholder="title" type="text" value="">
+				<input class="searchterm" v-model='description' name="description" placeholder="description" type="text" value="">
+				<input class="searchterm" v-model='username' name="username" placeholder="username" type="text" value="">
+				<input @change="handleChange" name="file" type="file" accept="image/*" class="btn btn-dark file">
+				<button id='submit-button' @click="handleUpload" id='submit-button' class="btn btn-dark">Upload</button>
+			</div>
+		</div>
+
+		<image-model v-if="showModal" :id="id" @close-modal="closeModalOnParent">
+		</image-model>
+
+		<div id="container">
+			<div class="results-container">
+				<div class="gallery" v-for="image in images" :key="image.url">
+					<img @click="showModalMethod(image.id)" :src="image.url" alt="" accept="image/*" width="600" height="400">
+					<div class="desc">{{ image.title }}</div>
+				</div>
+			</div>
+		</div>
+
+		<footer>
+			<p>© 2019 LoadEasy Company, Inc. Berlin</p>
+		</footer>
+	</div>
+
+	<!--this should be outside of #main*-->
+	<script id="image-model-templete" type="text/x-templete">
+		<div id="popup">
+			<div id="dialog">
+				<div id="popup_icerik">
+					<div id="closeX" >
+						<div id="close-button" @click="closeModal"><i class="fas fa-window-close fa-2x"></i></div>
+					</div>
+					<div>
+						<img :src="imageData.url" alt="" accept="image/*"/>
+						<p>{{ imageData.title }}</p>
+						<p>{{ imageData.description }}</p>
+						<p style="font-size: 12px">Uploaded by {{ imageData.username }} on {{ imageData.created_at }} </p>
+					</div>
+					<div id='add-comments'>
+						<h2>Add a comment!</h2>
+						<div id="comment-header">
+							<div>
+								<span>Username: </span>
+								<input v-model="commentUsername" placeholder="Enter your username" name="comment-username" type="text"/>
+							</div>
+							<div>
+								<span>Comment: </span>
+								<input v-model="comment" placeholder="Enter your comments here" name="comment" type="text"/>
+							</div>
+						</div>
+						<button @click="sendComment" type="submit" class="btn btn-primary">Send Comment</button>
+					</div>
+					<div id="show-comments">
+	                    <div id="commentbox" v-for="comment in commentsInfo">
+                           <p style="font-weight: bold;"> {{ comment.comment_username }} :</p>
+                           <p> {{ comment.comment }}</p>
+	                    </div>
+	                </div>
+					<p id='show-winner'>© 2019 LoadEasy Company, Inc. Berlin</p>
+				</div>
+			</div>
+			<div id="maske"></div>
+		</div>
+	</script>
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<script src="/js/vue.js"></script>
+	<script src="/js/axios.min.js"></script>
+	<script src="/js/script.js" charset="utf-8"></script>
+
+</body>
+
+</html>
